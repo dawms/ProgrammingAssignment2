@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Programming Assignment 2: Set and get cached matrix 
+## using two functions
 
-## Write a short comment describing this function
+## This function creates a special "matrix" object that can cache its inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  
+  invmat <- NULL
+  set <- function(y) {
+    x <<- y
+    invmat <<- NULL
+  }
+  get <- function() x
+  setinvmat <- function(solve) invmat <<- solve
+  getinvmat <- function() invmat
+  list(set = set, get = get,
+       setinvmat = setinvmat,
+       getinvmat = getinvmat)
 }
 
 
-## Write a short comment describing this function
+## This function computes the inverse of the special "matrix" returned by makeCacheMatrix
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+  invmat = x$getinvmat()
+  if (!is.null(invmat)) {
+    message("get cached matrix")
+    return(invmat)
+  }
+  inverse_matrix <- x$get()
+  invmat <- solve(inverse_matrix, ...)
+  x$setinvmat(invmat)
+  return(invmat)
 }
